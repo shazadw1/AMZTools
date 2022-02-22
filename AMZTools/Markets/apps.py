@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BusinessAdminConfig(AppConfig):
+class MarketsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Business_Admin'
+    name = 'Markets'
