@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}{% block title %}Sign Up{% endblock %} {% block stylesheets %}{% endblock %} {% block container %}
+<form method="post">
+    <!-- Company form -->
+    {% for i in company_form %} {{i.help_text}}<br> {{i}}
+    <br> {% endfor %}
+    <!-- Address form -->
+    {% for i in address_form %}{{i.help_text}}<br> {{i}}{% endfor %}
+    <input type="submit" value="Add Company">
+</form>
+{% endblock %} {% block scripts %}{% endblock %}

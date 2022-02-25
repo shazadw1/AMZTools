@@ -1,5 +1,11 @@
+from operator import mod
 from django.db import models
-from numpy import product
+from pyrsistent import b
+
+class AppList(models.Model):
+    code_app = models.CharField(max_length=100, blank=True)
+    display_name = models.CharField(max_length=100, blank=True)
+
 
 # Create your models here.
 class Package(models.Model):
@@ -16,3 +22,7 @@ class Package(models.Model):
     ppc_generation_limit = models.IntegerField(help_text='Enter PPC Generation Limit')
     ppc_optimization_limit = models.IntegerField(help_text='Enter PPC Optimization Limit')
 
+
+class ModulePlans(models.Model):
+    package = models.ForeignKey(Package,  on_delete=models.CASCADE, blank=True, null=True)
+    app_list = models.ManyToManyField(AppList)

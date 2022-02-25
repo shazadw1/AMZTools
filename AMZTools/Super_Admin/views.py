@@ -29,7 +29,9 @@ class SigninView(View):
 
     def post(self, request):
         user = authenticate(request, email=request.POST['email'], password=request.POST['password'])
-        if User.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+        # if User.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+        print(user)
+        if user is not None:
             login(request,user)
             messages.success(request, "Logged in successfully")
             return redirect("address_view")
