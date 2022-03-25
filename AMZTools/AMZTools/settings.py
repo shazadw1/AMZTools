@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Business_Admin', 'Plans', 'Super_Admin'
+    'Business_Admin', 'Plans', 'Super_Admin',
+    'Billing', 'Brand_Analytics','Compet_Analysis',
+    'Design_EBC', 'Design_Images', 'Design_Videos',
+    'GoogleAds_Generator', 'KW_Tracker', 'Listing',
+    'PPC_Generator', 'Prod_Validator', 'Sourcing',
+    'Virtual_Assitant'
 ]
 
 MIDDLEWARE = [
@@ -117,8 +122,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = ('static',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = '/plans/'
+LOGOUT_REDIRECT_URL = '/myaccounts/login'

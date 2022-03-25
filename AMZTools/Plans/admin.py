@@ -3,3 +3,4 @@ from . models import *
 # Register your models here.
 
 admin.site.register(Package)
+admin.site.register(Business_Admin_Plan)
