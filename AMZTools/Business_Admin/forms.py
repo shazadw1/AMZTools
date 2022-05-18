@@ -1,12 +1,5 @@
-from cProfile import label
-import imp
-from pydoc import text
-from random import choices
-from secrets import choice
-from tkinter import Label
-from tkinter.ttk import LabelFrame
-from click import option
 from django.forms import ModelForm
+from quart import request
 from . models import *
 from django import forms
 
@@ -15,6 +8,11 @@ from django import forms
     
 
 class CompanyForm(ModelForm):
+    try:
+        print(request.user)
+    except:
+        print("no")
+
     registered_address = forms.ModelChoiceField(
         queryset=Address.objects.filter(registered_address=True),
         widget=forms.Select,

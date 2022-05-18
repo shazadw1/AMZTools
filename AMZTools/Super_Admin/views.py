@@ -18,23 +18,23 @@ class SignupView(View):
         else:
             User.objects.create(username=request.POST['email'],email=request.POST['email'], password=request.POST['password'])
             messages.success(request, "You have signed up successfully !!")
-            return redirect("sign-in")
+            return redirect("/myaccounts/login")
         
 
 
 # Create your views here.
-class SigninView(View):
-    def get(self, request):        
-        return render(request, 'login_system/signin.html')
+# class SigninView(View):
+#     def get(self, request):        
+#         return render(request, 'login_system/signin.html')
 
-    def post(self, request):
-        user = authenticate(request, email=request.POST['email'], password=request.POST['password'])
-        # if User.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
-        print(user)
-        if user is not None:
-            login(request,user)
-            messages.success(request, "Logged in successfully")
-            return redirect("address_view")
-        else:
-            messages.error(request, "Either this mail is not registered with us or email and password does not matches.")
-            return redirect("sign-in")
+#     def post(self, request):
+#         user = authenticate(request, email=request.POST['email'], password=request.POST['password'])
+#         # if User.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+#         print(user)
+#         if user is not None:
+#             login(request,user)
+#             messages.success(request, "Logged in successfully")
+#             return redirect("address_view")
+#         else:
+#             messages.error(request, "Either this mail is not registered with us or email and password does not matches.")
+#             return redirect("sign-in")

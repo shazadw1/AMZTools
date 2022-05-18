@@ -1,0 +1,76 @@
+{% extends 'base/base2.html' %}{% load static %}{% block title %}Staff{% endblock %} {% block container %}
+<div>
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#">
+        Add Keyword
+    </button>
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Manual Validator
+    </button>
+</div>
+<div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>{{manual_validator_head.phrase}}</th>
+                <th>{{manual_validator_head.search_volume}}</th>
+                <th>{{manual_validator_head.title_density}}</th>
+                <th>{{manual_validator_head.position}}</th>
+                <th>{{manual_validator_head.asin2}}</th>
+                <th>{{manual_validator_head.asin3}}</th>
+                <th>{{manual_validator_head.asin4}}</th>
+                <th>{{manual_validator_head.asin5}}</th>
+                <th>{{manual_validator_head.asin6}}</th>
+                <th>{{manual_validator_head.asin7}}</th>
+                <th>{{manual_validator_head.asin8}}</th>
+                <th>{{manual_validator_head.asin9}}</th>
+                <th>{{manual_validator_head.asin10}}</th>
+                <th>{{manual_validator_head.asin11}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in manual_validator_data %}
+            <tr>
+                <td>{{i.phrase}}</td>
+                <td>{{i.search_volume}}</td>
+                <td>{{i.title_density}}</td>
+                <td>{{i.position}}</td>
+                <td>{{i.asin2}}</td>
+                <td>{{i.asin3}}</td>
+                <td>{{i.asin4}}</td>
+                <td>{{i.asin5}}</td>
+                <td>{{i.asin6}}</td>
+                <td>{{i.asin7}}</td>
+                <td>{{i.asin8}}</td>
+                <td>{{i.asin9}}</td>
+                <td>{{i.asin10}}</td>
+                <td>{{i.asin11}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- manual validator add-->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Validator</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %} {{form}}<br>
+                    <input type="submit">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

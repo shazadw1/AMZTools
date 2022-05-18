@@ -1,0 +1,121 @@
+{% extends 'base/base.html' %}{% load static %}{% block title %}Company{% endblock %} {% block stylesheets %}{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <a href="/add_company" class="btn btn-success m-3">Add Company</a>
+</div>
+<div>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">My Comapny</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Invited Company</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Registration Number</th>
+                        <th>Registration Address</th>
+                        <th>Trading Address</th>
+                        <th>Directors Name 1</th>
+                        <th>Directors Address</th>
+                        <th>Directors Name 2</th>
+                        <th>Directors Address</th>
+                        <th>Certificate incorp</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in company %}
+                    <tr>
+                        <td>{{i.name}}</td>
+                        <td>{{i.registration_number}}</td>
+                        <td>{{i.registered_address|truncatechars:5}}</td>
+                        <td>{{i.trading_address|truncatechars:5}}</td>
+                        <td>{{i.directors_name1}}</td>
+                        <td>{{i.director1_address|truncatechars:5}}</td>
+                        <td>{{i.directors_name2}}</td>
+                        <td>{{i.director2_address|truncatechars:5}}</td>
+                        <td><a href="{{i.certi_incorp.url}}">{{i.certi_incorp}}</a></td>
+                        <td><button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Edit</button></td>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                            <div class="offcanvas-header">
+                                <h5 id="offcanvasRightLabel">Company Edit</h5>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <form method="post" action="brand/{{i.id}}">
+                                    {% csrf_token %}
+                                    <label>Name :</label>
+                                    <input type="text" name="name" value="{{i.name}}"><br>
+                                    <label>Registration Number</label>
+                                    <input type="text" name="registration_number" value="{{i.registration_number}}"><br>
+                                    <label>Registered Address:</label>
+                                    <select>
+                                        <option value="{{i.registered_address.id}}">{{i.registered_address}}</option>
+                                        {% for address in address %}
+                                        <option value="{{address.id}}">{{address}}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <label>Trading Address   :</label>
+                                    <select>
+                                        <option value="{{i.trading_address.id}}">{{i.trading_address}}</option>
+                                        {% for address in address %}
+                                        <option value="{{address.id}}">{{address}}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <label>Directors Name1   :</label>
+                                    <input type="text" name="directors_name1" value="{{i.directors_name1}}"><br>
+                                    <label>Director1 Address  :</label>
+                                    <select>
+                                        <option value="{{i.director1_address.id}}">{{i.director1_address}}</option>
+                                        {% for address in address %}
+                                        <option value="{{address.id}}">{{address}}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <label>Directors Name2   :</label>
+                                    <input type="text" name="directors_name2" value="{{i.directors_name2}}"><br>
+                                    <label>Director2 Address  :</label>
+                                    <select>
+                                        <option value="{{i.director2_address.id}}">{{i.director2_address}}</option>
+                                        {% for address in address %}
+                                        <option value="{{address.id}}">{{address}}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <input type="submit" value="Edit">
+                                </form>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Brand Name</th>
+                        <th>Market Place</th>
+                        <th>Go Work</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in invited_company %}
+                    <tr>
+                        <td>{{i.brand_to_country.brand}}</td>
+                        <td>{{i.brand_to_country.market}}</td>
+                        <td><a href="/{{i.brand_to_country}}/{{i.id}}">Do Work</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %} {% block javascripts %} {% endblock %}

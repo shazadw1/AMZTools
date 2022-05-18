@@ -1,0 +1,28 @@
+step 1: on clicking Add staff button open pop up > 
+step 2: Enter Email > click ok
+search on user model from backend if present then add it 
+or 
+display a message user does not exists and This is the url do you want to invite the user. On button ok click send the email
+and if email is sent then add email to the list with pending status
+
+
+Staff Permission: 
+
+Modules select first
+
+
+
+Product Validator::
+
+staff login: menu option> opt1 product validation>opt1 add keyword(they can add multiple kw's)
+s1 :add kw
+s2 :background web scrapping
+
+s1&s2 :manual adding of files  
+s3 :calculation
+
+frontend :
+
+menu 3 options : (Add KW(18,19 line), 
+                    Manual validation >>>>form>>>>>  1.kw add,asin(1 to 10 asins),paste picture(3pics can add: x-ray graph, xray-ss, google trends ss), upload files(4, x-ray, cerebro, amazon choice, magnet) 
+                    Display all the existing KW related to brand)

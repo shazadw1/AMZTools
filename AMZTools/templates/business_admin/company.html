@@ -1,35 +1,38 @@
-{% extends 'base/base.html' %}{% load static %}{% block title %}Add Company{% endblock %} {% block stylesheets %}{% endblock %} {% block container %}
-<form method="post">
+{% extends 'base/base.html' %}{% load static %}{% block title %}Dashboard{% endblock %} {% block stylesheets %}{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+
+
+<form method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
     <!-- Company form -->
     {% for i in company_form %} {{i.help_text}} :<br> {% if i.name == 'registered_address' or i.name == 'trading_address' or i.name == 'director1_address' or i.name == 'director2_address' %} {{i}}
-    <a class="btn" onclick="document.querySelector('#address').style.display='block'">+ Add Address</a> <br> {% else %} {{i}} <br>{% endif %}
+    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Add Address</a> <br> {% else %} {{i}} <br>{% endif %}
     <br> {% endfor %}
-    <input type="submit" value="Add Company">
+    <input type="submit" class="btn btn-warning" value="Add Company">
 </form>
 
-<div class="modal" id="address" style="display: none;">
 
-    <div class="modal-content">
-
-        <div class="modal-header">
-            <div class="modal-title" id="my_setting-label">Address
-                <button onclick="document.querySelector('#address').style.display='none'">X</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="address_form" action="/address">
+                    {% for i in address_form %} {{i.help_text}} :<br> {{i}} <br>{% endfor %}
+                    <div class="btn btn-primary" onclick="SubmitForm()">Add Address</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-
-        <div class="modal-body">
-            <form method="post" id="address_form">
-                {% csrf_token %} {% for i in address_form %} {{i.help_text}} :<br> {{i}} <br>{% endfor %}
-                <input type="submit" value="Add Address">
-            </form>
-        </div>
-
     </div>
-
 </div>
 
 {% endblock %} {% block javascripts %}
 <script src="{% static 'js/business_admin.js' %}"></script>
+
 {% endblock %}

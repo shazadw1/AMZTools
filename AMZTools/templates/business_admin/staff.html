@@ -1,0 +1,165 @@
+{% extends 'base/base.html' %}{% load static %}{% block title %}Staff{% endblock %} {% block stylesheets %}
+<style>
+    #regForm {
+        background-color: #ffffff;
+        margin: 60px auto;
+        font-family: Raleway;
+        padding: 20px;
+        width: 80%;
+        min-width: 300px;
+    }
+    
+    h1 {
+        text-align: center;
+    }
+    
+    input {
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-family: Raleway;
+        border: 1px solid #aaaaaa;
+    }
+    /* Mark input boxes that gets an error on validation: */
+    
+    input.invalid {
+        background-color: #ffdddd;
+    }
+    /* Hide all steps by default: */
+    
+    .tab {
+        display: none;
+    }
+    
+    button {
+        background-color: #04AA6D;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 17px;
+        font-family: Raleway;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        opacity: 0.8;
+    }
+    
+    #prevBtn {
+        background-color: #bbbbbb;
+    }
+</style>
+{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add Staff
+    </button>
+</div>
+<div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>User Name</th>
+                <th>Brand Name</th>
+                <th>Market Place</th>
+                <th>Trade Mark</th>
+                <th>Permissions</th>
+                <th>Remove User</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in permission_staff %}
+            <tr>
+                <td>{{i.to_staff}}</td>
+                <td>{{i.brand_to_country.brand}}</td>
+                <td>{{i.brand_to_country.market}}</td>
+                <td>{{i.brand_to_country.trade_mark}}</td>
+                <td><button type="button" onclick="location.href='/staff/{{i.id}}'" class="btn btn-success btn-sm">User Permission</button></td>
+                <td><button type="button" onclick='location.href="/delete_staff/{{i.id}}"' class="btn btn-danger btn-sm">Remove User</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Give permission to staff-->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="regForm" method="post">
+                    {% csrf_token %}
+
+                    <!-- One "tab" for each step in the form: -->
+                    <div class="tab">Email or Username :
+                        <p><input placeholder="Registered Email address..." name="email" required></p>
+
+                        <div style="overflow:auto;">
+                            <div style="float:right;">
+                                <input type="button" class="btn btn-danger" onclick="if_user_present()" value="Check Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab">Choose Brand for that user :
+                        <p><select name="brand_to_country">
+                            <option value="">Select Brand and market</option>
+                            {% for i in brands_in_market %}
+                            <option value="{{i.id}}">{{i.brand}} : {{i.market}}</option>
+                            {% endfor %}
+                        </select></p>
+
+                        <div style="overflow:auto;">
+                            <div style="float:right;">
+                                <input type="submit" class="btn btn-succes" value="Add Staff">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <div class="h5">User with this E-mail Id does not exists. Do you want to invite the user? Click on below Send Email Button</div>
+
+                        <div style="float:right;">
+                            <input type="submit" class="btn btn-success" value="Send Mail">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {% block javascripts %}
+<script>
+    document.getElementsByClassName('tab')[0].style.display = "block";
+
+    function if_user_present() {
+        email = document.getElementsByName('email')[0].value;
+        if (email == '') {
+            alert("Please enter the email first")
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: '/staffemailcheck',
+                data: {
+                    'email': email
+                },
+                success: function(response) {
+                    document.getElementsByClassName('tab')[0].style.display = "none";
+                    document.getElementsByClassName('tab')[response.num].style.display = "block";
+                }
+            });
+            return false;
+        }
+    }
+</script>
+{% endblock %}

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'Design_EBC', 'Design_Images', 'Design_Videos',
     'GoogleAds_Generator', 'KW_Tracker', 'Listing',
     'PPC_Generator', 'Prod_Validator', 'Sourcing',
-    'Virtual_Assitant'
+    'Virtual_Assitant', 'AppList'
 ]
 
 MIDDLEWARE = [
@@ -123,6 +123,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ('static',)
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -130,5 +132,17 @@ STATICFILES_DIRS = ('static',)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGIN_REDIRECT_URL = '/plans/'
+LOGIN_REDIRECT_URL = '/company'
 LOGOUT_REDIRECT_URL = '/myaccounts/login'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Celery
+# CELERY_BROKER_URL = 'amqp://localhost'
+
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'

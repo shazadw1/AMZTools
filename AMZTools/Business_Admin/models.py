@@ -1,3 +1,4 @@
+from statistics import mode
 from tokenize import blank_re
 from django.db import models
 from django.contrib.auth.models import User
@@ -27,7 +28,7 @@ class Address(models.Model):
 
 
 class Company(models.Model):
-    business_admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    business_admin = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=200,blank=True, help_text='Enter Company Name')
     registration_number = models.BigIntegerField(blank=True, help_text='Enter company registration number')
     registered_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True, related_name='reg_address', help_text="Select Registration Address")
@@ -39,6 +40,8 @@ class Company(models.Model):
     director2_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True, related_name='director_address2', help_text="Select Director 2 Address")
     certi_incorp = models.FileField(upload_to='incorp_certificates', blank=True, help_text='Upload a copy of certificate incorpation')
 
+    def __str__(self):
+        return self.name
 
 """Bank details related to company"""
 
@@ -52,12 +55,17 @@ class BankDetails(models.Model):
     swift_code = models.CharField(max_length=20)
     banks_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True, related_name='bank_address')
 
+    def __str__(self):
+        return self.bank_name
 
 """Markets details related to company select"""
 
 
 class Markets(models.Model):
     name = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.name
   
   
 """Brands details related to company"""
@@ -67,6 +75,9 @@ class Brands(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True, null=True)
     brand_name = models.CharField(max_length=200)
 
+    def __str__(self) -> str:
+        return self.brand_name
+
 
 """A particular brand in a market"""
 
@@ -74,13 +85,30 @@ class Brands(models.Model):
 class BrandToMarket(models.Model):
     brand = models.ForeignKey(Brands, on_delete=models.CASCADE, blank=True, null=True)
     market = models.ForeignKey(Markets, on_delete=models.CASCADE, blank=True, null=True)
-    trade_mark = models.CharField(max_length=200, blank=True)
+    trade_mark = models.CharField(max_length=200, blank=True, unique=True)
+
+    def __str__(self) -> str:
+        return self.trade_mark
 
 
 """Permission to user for each brand that is active in a market"""
 
 
 class PermissionToStaff(models.Model):
-    brand_to_country = models.ForeignKey(BrandToMarket, on_delete=models.CASCADE, null=True)
+    brand_to_country = models.ForeignKey(BrandToMarket, on_delete=models.CASCADE, blank=True)
     to_staff = models.ForeignKey('auth.user', on_delete=models.CASCADE, null=True)
     staff_permission = models.ManyToManyField('auth.permission')
+    staff_modules = models.CharField(max_length=10000, blank=True)
+
+    def __str__(self) -> str:
+        return str(self.brand_to_country)+" "+str(self.to_staff)
+
+
+"""When Email sent to non-registered people save their data here"""
+
+
+class PendingStaff(models.Model):
+    to_staff = models.EmailField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.to_staff

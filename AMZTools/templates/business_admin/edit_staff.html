@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}{% load static %}{% block title %}Staff{% endblock %} {% block stylesheets %}{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <form id="staff_permission" method="post">
+        {% csrf_token %} {% for i in permissions %} {% if i in given_permissions.staff_permission.all %}
+        <input type="checkbox" value="{{i.id}}" name="staff_permission" checked> &nbsp; {{i.name}} <br><br> {% else %}
+        <input type="checkbox" value="{{i.id}}" name="staff_permission"> &nbsp; {{i.name}} <br><br> {% endif %} {% endfor %}
+        <input type="submit" value="Confirm Permissions">
+    </form>
+
+</div>
+
+{% endblock %} {% block javascripts %} {% endblock %}

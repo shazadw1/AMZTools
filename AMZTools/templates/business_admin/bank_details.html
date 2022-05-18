@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}{% load static %}{% block title %}Staff{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add Staff
+    </button>
+</div>
+<div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>User Name</th>
+                <th>Brand Name</th>
+                <th>Market Place</th>
+                <th>Trade Mark</th>
+                <th>Permissions</th>
+                <th>Remove User</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in permission_staff %}
+            <tr>
+                <td>{{i.to_staff}}</td>
+                <td>{{i.brand_to_country.brand}}</td>
+                <td>{{i.brand_to_country.market}}</td>
+                <td>{{i.brand_to_country.trade_mark}}</td>
+                <td><button type="button" onclick="location.href='/staff/{{i.id}}'" class="btn btn-success btn-sm">User Permission</button></td>
+                <td><button type="button" onclick='location.href="/delete_staff/{{i.id}}"' class="btn btn-danger btn-sm">Remove User</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Give permission to staff-->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <select name="company">
+                        <option value="">Select Company</option>
+                    </select><br>
+                    <input name="bank_name"><br>
+                    <input name="sort_code"><br>
+                    <input name="account_number"><br>
+                    <input name="iban"><br>
+                    <input name="swift_code"><br>
+                    <input name="banks_address"><br>
+                    <input type="submit" value="Add Bank">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

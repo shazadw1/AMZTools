@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}{% load static %}{% block title %}Brands{% endblock %} {% block stylesheets %}{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add Brand
+    </button>
+</div>
+<div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>Company Name</th>
+                <th>Brand Name</th>
+                <th>Market Place</th>
+                <th>Trade Mark</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in brand %}
+            <tr>
+                <td>{{i.brand.company}}</td>
+                <td>{{i.brand}}</td>
+                <td>{{i.market}}</td>
+                <th>{{i.trade_mark}}</th>
+                <th><button type="button" onclick='location.href="/brand/{{i.id}}"' class="btn btn-danger btn-sm">Delete TradeMark</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Add brands modal-->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form action="/brand" method="post">
+        {% csrf_token %}
+        <select name="company" required>
+                        <option value="">Select Company</option>
+                        {% for i in company %}
+                        <option value="{{i.id}}">{{i}}</option>
+                        {% endfor %}
+                    </select><br>
+        <select name="brand_name">
+                        <option value="">Select Brand Name</option>
+                        {% for i in brands %}
+                        <option value="{{i.id}}">{{i}}</option>
+                        {% endfor %}
+                    </select> OR <input name="brand_name1" placeholder="Enter new brand name"><br>
+        <select name="market_name" required>
+                        <option value="">Select Market</option>
+                        {% for i in market %}
+                        <option value="{{i.id}}">{{i}}</option>
+                        {% endfor %}
+                    </select><br>
+        <input type="text" name="trademark" placeholder="Enter Trade Mark" required><br>
+        <input type="submit">
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %} {% block javascripts %} {% endblock %}

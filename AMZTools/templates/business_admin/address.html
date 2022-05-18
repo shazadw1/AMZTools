@@ -1,6 +1,85 @@
-{% extends 'base/base.html' %}{% block title %}Sign Up{% endblock %} {% block stylesheets %}{% endblock %} {% block container %}
-<form method="post">
-    {{form}}
-    <input type="submit" value="Add address">
-</form>
-{% endblock %} {% block scripts %}{% endblock %}
+{% extends 'base/base.html' %}{% load static %}{% block title %}Address{% endblock %} {% block stylesheets %}{% endblock %} {% block container %} {% include 'business_admin/header2.html' %}
+<div>
+    <a href="/" class="btn btn-success m-3">Add Address</a>
+</div>
+<div>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>street 1</th>
+                <th>street 2</th>
+                <th>Area</th>
+                <th>City Address</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Registered Address</th>
+                <th>Trading Address</th>
+                <th>Directors Address</th>
+                <th>Bank Address</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in address %}
+            <tr>
+                <td>{{i.street1}}</td>
+                <td>{{i.street2}}</td>
+                <td>{{i.area}}</td>
+                <td>{{i.city}}</td>
+                <td>{{i.state}}</td>
+                <td>{{i.country}}</td>
+                <td>{% if i.registered_address == True %}Yes {% else %}No {% endif %}</td>
+                <td>{% if i.trading_address == True %}Yes {% else %}No {% endif %}</td>
+                <td>{% if i.directors_address == True %}Yes {% else %}No {% endif %}</td>
+                <td>{% if i.my_bank_address == True %}Yes {% else %}No {% endif %}</td>
+                <td><button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Edit</button></td>
+
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h5 id="offcanvasRightLabel">Address</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <form method="post" action="address/{{i.id}}">
+                            {% csrf_token %}
+                            <label>Street 1 :</label>
+                            <input type="text" name="street1" value="{{i.street1}}"><br>
+                            <label>Street 2 :</label>
+                            <input type="text" name="street2" value="{{i.street2}}"><br>
+                            <label>Area     :</label>
+                            <input type="text" name="area" value="{{i.area}}"><br>
+                            <label>City     :</label>
+                            <input type="text" name="city" value="{{i.city}}"><br>
+                            <label>State    :</label>
+                            <input type="text" name="state" value="{{i.state}}"><br>
+                            <label>Country  :</label>
+                            <input type="text" name="country" value="{{i.country}}"><br>
+                            <label>Is it Registered Address</label><br> {% if i.registered_address == True %}
+                            <input type="checkbox" name="registered_address" checked><br> {% else %}
+                            <input type="checkbox" name="registered_address"> <br>{% endif %}
+
+                            <label>Is it Trading Address</label><br> {% if i.trading_address == True %}
+                            <input type="checkbox" name="trading_address" checked> <br>{% else %}
+                            <input type="checkbox" name="trading_address"><br> {% endif %}
+
+                            <label>Is it Directors Address</label><br> {% if i.directors_address == True %}
+                            <input type="checkbox" name="directors_address" checked><br> {% else %}
+                            <input type="checkbox" name="directors_address"><br> {% endif %}
+
+                            <label>Is it Bank Address</label><br> {% if i.my_bank_address == True %}
+                            <input type="checkbox" name="my_bank_address" checked><br> {% else %}
+                            <input type="checkbox" name="my_bank_address"><br> {% endif %}
+                            <input type="submit" value="Edit">
+                        </form>
+                    </div>
+                </div>
+                <th><a href="/address/{{i.id}}">Delete</a></th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %} {% block javascripts %} {% endblock %}
