@@ -188,17 +188,9 @@ class DeleteStaff(View):
 
 class WorkInMarket(View):
 
-    def get(self, request, trade_marks, pk):
-        a=PermissionToStaff.objects.get(id=pk)
+    def get(self, request, trade_marks, permission_to_staff_id):
+        a=PermissionToStaff.objects.get(id=permission_to_staff_id)
         data = {'my_modules':a.staff_modules.split(',')}
-        filesss = r'/home/rutujakadam/Downloads/Cerebro.xlsx'
-        # test_func.delay(filesss)
-        # li = ['ph', 'ab cd']
-        # a = [{'ph':'1', 'ab cd':'g'} ,{'ph':'2', 'ab cd':'gf'}, {'ph':'3', 'ab cd':'gd'} ,{'ph':'4', 'ab cd':'gs'}, {'ph':'5', 'ab cd':'ge'} ,{'ph':'6', 'ab cd':'gy'}]
-        # for e in a:
-        #     print(e[li[0]])
-        #     print(e[li[1]])
-        
         return render(request, 'base/base2.html', data)
 
 

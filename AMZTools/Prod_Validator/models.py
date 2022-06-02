@@ -1,5 +1,6 @@
 import imp
 from operator import mod
+from pyexpat import model
 from django.db import models
 from Business_Admin.models import BrandToMarket
 
@@ -9,6 +10,9 @@ class KeyWord(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+"""Cerebro file is saved"""
 
 
 class ManualValidator(models.Model):
@@ -33,8 +37,11 @@ class ManualValidator(models.Model):
     magnet = models.FileField(upload_to='manual_validator/magnet', blank=True)
 
 
+"""Column Heading"""
+
+
 class ManualValidatorHead(models.Model):
-    keyword = models.ForeignKey(ManualValidator, on_delete=models.CASCADE, blank=True, null=True, unique=True)
+    keyword = models.OneToOneField(ManualValidator, on_delete=models.CASCADE, blank=True, null=True)
     phrase = models.CharField(max_length=1000, blank=True)
     search_volume = models.CharField(max_length=1000, blank=True)
     title_density = models.CharField(max_length=1000,null=True, blank=True)
@@ -49,9 +56,13 @@ class ManualValidatorHead(models.Model):
     asin9 = models.CharField(max_length=1000, blank=True)
     asin10 = models.CharField(max_length=1000, blank=True)
     asin11 = models.CharField(max_length=1000, blank=True)
+
+
+"""Original data"""
+
 
 class ManualValidatorData(models.Model):
-    head = models.ForeignKey(ManualValidatorHead, on_delete=models.CASCADE, blank=True, null=True, unique=True)
+    head = models.ForeignKey(ManualValidatorHead, on_delete=models.CASCADE, blank=True, null=True)
     phrase = models.CharField(max_length=1000, blank=True)
     search_volume = models.CharField(max_length=1000, blank=True)
     title_density = models.CharField(max_length=1000,null=True, blank=True)
@@ -67,3 +78,34 @@ class ManualValidatorData(models.Model):
     asin10 = models.CharField(max_length=1000, blank=True)
     asin11 = models.CharField(max_length=1000, blank=True)
 
+
+class ManualValidatorDataFilter(models.Model):
+    mv = models.OneToOneField(ManualValidator, on_delete=models.CASCADE, blank=True, null=True)
+    min_sv = models.BigIntegerField(null=True)
+    min_relavency = models.BigIntegerField(null=True)
+    max_rank = models.BigIntegerField(null=True)
+
+
+class ManualValidatorDataFilterResult(models.Model):
+    filter = models.OneToOneField(ManualValidatorDataFilter, on_delete=models.CASCADE, blank=True, null=True)
+    search_volume_total = models.PositiveBigIntegerField(null=True)
+    top_10_sv = models.CharField(null=True, blank=True, max_length=5000)
+    top_10percent_sv = models.CharField(null=True, blank=True, max_length=5000)
+    top_30_sv = models.CharField(null=True, blank=True, max_length=5000)
+    top_30percent_sv = models.CharField(null=True, blank=True, max_length=5000)
+
+
+class ManualValidatorFilteredData(models.Model):
+    mv_filtered_result = models.ForeignKey(ManualValidatorDataFilterResult, on_delete=models.CASCADE, blank=True, null=True)
+    phrase = models.CharField(max_length=1000, blank=True)
+    search_volume = models.CharField(max_length=1000, blank=True)
+    asin2 = models.CharField(max_length=1000, blank=True)
+    asin3 = models.CharField(max_length=1000, blank=True)
+    asin4 = models.CharField(max_length=1000, blank=True)
+    asin5 = models.CharField(max_length=1000, blank=True)
+    asin6 = models.CharField(max_length=1000, blank=True)
+    asin7 = models.CharField(max_length=1000, blank=True)
+    asin8 = models.CharField(max_length=1000, blank=True)
+    asin9 = models.CharField(max_length=1000, blank=True)
+    asin10 = models.CharField(max_length=1000, blank=True)
+    asin11 = models.CharField(max_length=1000, blank=True)

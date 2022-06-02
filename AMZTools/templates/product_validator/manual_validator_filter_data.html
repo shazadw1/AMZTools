@@ -1,0 +1,85 @@
+{% extends 'product_validator/manual_validator.html' %}{% load static %}{% block title %}Data Detail{% endblock %} {% block mv %}
+
+<table class="table table-light table-bordered">
+    <thead class="table-success">
+        <tr>
+
+            <td colspan="2" class="table-danger">Top 30% SV</td>
+            {% for i in top_thirty_percent %}
+            <td>{{i}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+
+            <td colspan="2" class="table-danger">Top 30 SV</td>
+            {% for i in top_thirty %}
+            <td>{{i}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+
+            <td colspan="2" class="table-danger">Top 10% SV</td>
+            {% for i in top_ten_percent %}
+            <td>{{i}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+
+            <td colspan="2" class="table-danger">Top 10 SV</td>
+            {% for i in top_ten %}
+            <td>{{i}}</td>
+            {% endfor %}
+        </tr>
+    </thead>
+    <thead class="table-dark">
+        <tr>
+            <th>Phrase</th>
+            <th>{{manual_validator_head.search_volume}}</th>
+            <th>{{manual_validator_head.asin2}}</th>
+            <th>{{manual_validator_head.asin3}}</th>
+            <th>{{manual_validator_head.asin4}}</th>
+            <th>{{manual_validator_head.asin5}}</th>
+            <th>{{manual_validator_head.asin6}}</th>
+            <th>{{manual_validator_head.asin7}}</th>
+            <th>{{manual_validator_head.asin8}}</th>
+            <th>{{manual_validator_head.asin9}}</th>
+            <th>{{manual_validator_head.asin10}}</th>
+            <th>{{manual_validator_head.asin11}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in page_obj %}
+        <tr>
+            <td>{{i.phrase}}</td>
+            <td>{{i.search_volume}}</td>
+            <td>{{i.asin2}}</td>
+            <td>{{i.asin3}}</td>
+            <td>{{i.asin4}}</td>
+            <td>{{i.asin5}}</td>
+            <td>{{i.asin6}}</td>
+            <td>{{i.asin7}}</td>
+            <td>{{i.asin8}}</td>
+            <td>{{i.asin9}}</td>
+            <td>{{i.asin10}}</td>
+            <td>{{i.asin11}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span> {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+    </span>
+</div>
+
+{% endblock %}

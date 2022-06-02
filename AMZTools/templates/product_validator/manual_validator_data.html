@@ -1,13 +1,47 @@
-{% extends 'base/base2.html' %}{% load static %}{% block title %}Staff{% endblock %} {% block container %}
+{% extends 'product_validator/manual_validator.html' %}{% load static %}{% block title %}Data Detail{% endblock %} {% block mv %}
+
 <div>
-    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#">
-        Add Keyword
-    </button>
-    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Manual Validator
-    </button>
-</div>
-<div>
+    <div class="mb-2">
+        <form method="post">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <input type="number" placeholder="Minimum Search Volume" name="min_sv" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" placeholder="Minimum Relavency" name="min_rel" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" placeholder="Maximum Rank" name="min_rank" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="submit" class="btn-success">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Minimum Search Volume</th>
+                    <th>Minimum Relavency</th>
+                    <th>Maximum Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>{% for i in filtering_condition %}
+                    <td>{{i.min_sv}}</td>
+                    <td>{{i.min_relavency}}</td>
+                    <td>{{i.max_rank}}</td>
+                    <td><a href="{{request.path}}/{{i.id}}">See</a></td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <table class="table">
         <thead class="table-dark">
@@ -29,7 +63,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in manual_validator_data %}
+            {% for i in page_obj %}
             <tr>
                 <td>{{i.phrase}}</td>
                 <td>{{i.search_volume}}</td>
@@ -50,27 +84,21 @@
         </tbody>
     </table>
 
-</div>
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-<!-- manual validator add-->
-
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Add Validator</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %} {{form}}<br>
-                    <input type="submit">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span> {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+        </span>
     </div>
+
 </div>
+
 {% endblock %}

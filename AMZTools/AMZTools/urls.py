@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Plans.urls')),
     path('', include('Business_Admin.urls')),
-    path('<str:trade_mark>/<int:ppk>/product_validator/', include('Prod_Validator.urls')),
+    path('<str:trade_mark>/<int:permission_to_staff_id>/product_validator/', include('Prod_Validator.urls')),
     path('user/', include('Super_Admin.urls')),
     path('myaccounts/',include('django.contrib.auth.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

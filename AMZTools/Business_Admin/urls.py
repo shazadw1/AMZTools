@@ -17,8 +17,5 @@ urlpatterns = [
     path('staff/<int:pk>', login_required(StaffEdit.as_view()), name='staff_edit'),
     path('delete_staff/<int:pk>', login_required(DeleteStaff.as_view()), name='staff_delete'),
     
-    path('<str:trade_marks>/<int:pk>', login_required(WorkInMarket.as_view()), name='market'),
-    path('display_csv', display_csv, name='display_csv'),
-
-
+    path('<str:trade_marks>/<int:permission_to_staff_id>', login_required(WorkInMarket.as_view()), name='market'),
 ]
