@@ -3,29 +3,38 @@
 <table class="table table-light table-bordered">
     <thead class="table-success">
         <tr>
-
-            <td colspan="2" class="table-danger">Top 30% SV</td>
-            {% for i in top_thirty_percent %}
-            <td>{{i}}</td>
-            {% endfor %}
+            <td colspan="3">Total Search Volume</td>
+            <td>{{total_search_volume}}</td>
+        </tr>
+        <tr>
+            <td colspan="3">Total Phrases</td>
+            <td>{{total_phrase}}</td>
         </tr>
         <tr>
 
-            <td colspan="2" class="table-danger">Top 30 SV</td>
+            <td colspan="3" class="table-danger">Top 30% SV</td>
+            {% for i in top_thirty_percent %}
+            <td>{{i|floatformat:2}}</td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+
+            <td colspan="3" class="table-danger">Top 30 SV</td>
             {% for i in top_thirty %}
             <td>{{i}}</td>
             {% endfor %}
         </tr>
         <tr>
 
-            <td colspan="2" class="table-danger">Top 10% SV</td>
+            <td colspan="3" class="table-danger">Top 10% SV</td>
             {% for i in top_ten_percent %}
-            <td>{{i}}</td>
+            <td>{{i|floatformat:2}}</td>
             {% endfor %}
         </tr>
         <tr>
 
-            <td colspan="2" class="table-danger">Top 10 SV</td>
+            <td colspan="3" class="table-danger">Top 10 SV</td>
             {% for i in top_ten %}
             <td>{{i}}</td>
             {% endfor %}
@@ -34,6 +43,7 @@
     <thead class="table-dark">
         <tr>
             <th>Phrase</th>
+            <th>Score</th>
             <th>{{manual_validator_head.search_volume}}</th>
             <th>{{manual_validator_head.asin2}}</th>
             <th>{{manual_validator_head.asin3}}</th>
@@ -51,6 +61,7 @@
         {% for i in page_obj %}
         <tr>
             <td>{{i.phrase}}</td>
+            <td>{{i.score}}</td>
             <td>{{i.search_volume}}</td>
             <td>{{i.asin2}}</td>
             <td>{{i.asin3}}</td>
@@ -80,6 +91,6 @@
     <a href="?page={{ page_obj.next_page_number }}">next</a>
     <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
     </span>
-</div>
 
-{% endblock %}
+</div>
+<button class="btn btn-success">Export as Excel</button> &nbsp; <button class="btn btn-success">Submit for Review</button> {% endblock %}

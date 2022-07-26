@@ -97,5 +97,7 @@ class ManualValidatorFilterView(View):
             'top_ten_percent':list(eval(result.top_10percent_sv)),
             'top_thirty':list(eval(result.top_30_sv)),
             'top_thirty_percent':list(eval(result.top_30percent_sv)),
+            'total_search_volume':result.search_volume_total,
+            'total_phrase': result.total_phrase
         }
         return render(request,"product_validator/manual_validator_filter_data.html", data)

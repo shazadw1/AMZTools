@@ -12,6 +12,10 @@ def clean_size(x):
     elif ">" in x:
         x=x.replace('>',str(0))
         return (x)
+    elif "NaN" in x:
+        x=x.replace('NaN',str(0))
+    elif "nan" in x:
+        x=x.replace('nan',str(0))
     elif "N/R" in x:
         x=x.replace('N/R',str(0))
     elif x == None:
@@ -72,39 +76,51 @@ def filter_data(self, filess, min_sv, min_rel, max_rank, mv_f_id, mv_pk):
     df1=df[column_list[-10:]]
 
     # # filter out this asins df such that in each row every column value greater than max_rank or equal to max rank will be converted to Nan
-    d=df1[df1<int(max_rank)]
+    d=df1[df1<=int(max_rank)]
 
     # # count total Nan in each row and see if count of nan is greater than (10-min_relv+1) i.e filter out only those rows that have at least min_rev (number of)
     # # of asins having value less than max rank
     min_relv = (10-int(min_rel))+1
     d = d[d.isnull().sum(axis=1) < min_relv]
 
+    # create a score column to count number of rel . but first copy sv column values to it just to create column 
+    d["score"] = df['Search Volume']
+    d["score"] = d.notna().sum(axis=1)-1
+
     # # making the final dataframe having all columns with all filtered values
     del column_list[2:4]
     df=df.loc[d.index.tolist(), column_list]
+    df["score"] = d["score"].values
 
     # # exclude phrase in order to add up the sv having asin greater than 10 and 30 column wise
-    d=df.loc[:, df.columns!='Phrase']
-    top10=d[d>10].sum().tolist()
-    top30=d[d>30].sum().tolist()
+
+    # changes:::::::::::::::::::::::  sv gets added if asin column is less than or equal to 10 or 30
+
+    top10= [df.loc[df[i] <= 10, 'Search Volume'].sum() for i in df.columns.tolist()[2:12]]
+    top30= [df.loc[df[i] <= 30, 'Search Volume'].sum() for i in df.columns.tolist()[2:12]]
+
+    sv_total = df['Search Volume'].sum()
 
     # # Create your result model
     mv_f_result = ManualValidatorDataFilterResult.objects.create(filter=ManualValidatorDataFilter.objects.get(id=int(mv_f_id)),
-                                                    search_volume_total=top10[0],
-                                                    top_10_sv = top10[1:],
-                                                    top_30_sv = top30[1:],
-                                                    top_10percent_sv = [x/top10[0] for x in top10[1:]],
-                                                    top_30percent_sv = [x/top30[0] for x in top30[1:]]
+                                                    total_phrase = df['Phrase'].count(),
+                                                    search_volume_total=sv_total,
+                                                    top_10_sv = top10,
+                                                    top_30_sv = top30,
+                                                    top_10percent_sv = [(x*100)/sv_total for x in top10],
+                                                    top_30percent_sv = [(x*100)/sv_total for x in top30]
                                                 )
     
     df = original_df.loc[d.index.tolist(), column_list]
+    df["score"] = d["score"].values
     data_list = df.to_dict(orient='records')
+ 
     objs = [
         ManualValidatorFilteredData(
                             mv_filtered_result = ManualValidatorDataFilterResult.objects.get(id=mv_f_result.id), phrase = e[column_list[0]] ,search_volume = e[column_list[1]], asin2 = e[column_list[2]],
                             asin3 = e[column_list[3]], asin4 = e[column_list[4]],asin5 = e[column_list[5]],asin6 = e[column_list[6]], 
                             asin7 = e[column_list[7]],asin8 = e[column_list[8]], asin9 = e[column_list[9]],asin10 = e[column_list[10]],
-                            asin11 = e[column_list[11]]
+                            asin11 = e[column_list[11]], score = e['score']
         )
         for e in data_list
     ]

@@ -1,0 +1,104 @@
+{% extends 'product_validator/manual_validator.html' %}{% load static %}{% block title %}Data Detail{% endblock %} {% block mv %}
+
+<div>
+    <div class="mb-2">
+        <form method="post">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <input type="number" placeholder="Minimum Search Volume" name="min_sv" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" placeholder="Minimum Relavency" name="min_rel" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" placeholder="Maximum Rank" name="min_rank" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <input type="submit" class="btn-success">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Minimum Search Volume</th>
+                    <th>Minimum Relavency</th>
+                    <th>Maximum Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>{% for i in filtering_condition %}
+                    <td>{{i.min_sv}}</td>
+                    <td>{{i.min_relavency}}</td>
+                    <td>{{i.max_rank}}</td>
+                    <td><a href="{{request.path}}/{{i.id}}">See</a></td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>{{manual_validator_head.phrase}}</th>
+                <th>{{manual_validator_head.search_volume}}</th>
+                <th>{{manual_validator_head.title_density}}</th>
+                <th>{{manual_validator_head.position}}</th>
+                <th>{{manual_validator_head.asin2}}</th>
+                <th>{{manual_validator_head.asin3}}</th>
+                <th>{{manual_validator_head.asin4}}</th>
+                <th>{{manual_validator_head.asin5}}</th>
+                <th>{{manual_validator_head.asin6}}</th>
+                <th>{{manual_validator_head.asin7}}</th>
+                <th>{{manual_validator_head.asin8}}</th>
+                <th>{{manual_validator_head.asin9}}</th>
+                <th>{{manual_validator_head.asin10}}</th>
+                <th>{{manual_validator_head.asin11}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in page_obj %}
+            <tr>
+                <td>{{i.phrase}}</td>
+                <td>{{i.search_volume}}</td>
+                <td>{{i.title_density}}</td>
+                <td>{{i.position}}</td>
+                <td>{{i.asin2}}</td>
+                <td>{{i.asin3}}</td>
+                <td>{{i.asin4}}</td>
+                <td>{{i.asin5}}</td>
+                <td>{{i.asin6}}</td>
+                <td>{{i.asin7}}</td>
+                <td>{{i.asin8}}</td>
+                <td>{{i.asin9}}</td>
+                <td>{{i.asin10}}</td>
+                <td>{{i.asin11}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span> {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+        </span>
+    </div>
+
+</div>
+
+{% endblock %}

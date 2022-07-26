@@ -1,6 +1,3 @@
-import imp
-from operator import mod
-from pyexpat import model
 from django.db import models
 from Business_Admin.models import BrandToMarket
 
@@ -88,6 +85,7 @@ class ManualValidatorDataFilter(models.Model):
 
 class ManualValidatorDataFilterResult(models.Model):
     filter = models.OneToOneField(ManualValidatorDataFilter, on_delete=models.CASCADE, blank=True, null=True)
+    total_phrase =  models.PositiveBigIntegerField(null=True)
     search_volume_total = models.PositiveBigIntegerField(null=True)
     top_10_sv = models.CharField(null=True, blank=True, max_length=5000)
     top_10percent_sv = models.CharField(null=True, blank=True, max_length=5000)
@@ -98,6 +96,7 @@ class ManualValidatorDataFilterResult(models.Model):
 class ManualValidatorFilteredData(models.Model):
     mv_filtered_result = models.ForeignKey(ManualValidatorDataFilterResult, on_delete=models.CASCADE, blank=True, null=True)
     phrase = models.CharField(max_length=1000, blank=True)
+    score = models.IntegerField(null=True, blank=True)
     search_volume = models.CharField(max_length=1000, blank=True)
     asin2 = models.CharField(max_length=1000, blank=True)
     asin3 = models.CharField(max_length=1000, blank=True)
